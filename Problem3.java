@@ -7,47 +7,66 @@ import kareltherobot.*;
  */
 public class Problem3 extends Robot
 {
-    public Problem3(int st, int av, Direction dir, int numBeepers) {
+   public Problem3(int st, int av, Direction dir, int numBeepers) {
         super(st, av, dir, numBeepers);
     }
     
-    public void closeAllWindows() {
-        moveAlongWall();
+   public void closeAllWindows() {
+        findWall();
+        while (!nextToABeeper()){
+            moveAlongWall();
+            closeWindow();
+        }
         
-        finish();
     }
-    public void moveAlongWall(){
+   public void findWall(){
+       while (frontIsClear()){
+           move();
+        }
+       turnLeft();
+    }
+   public void moveAlongWall(){
+        
+        
         while ((frontIsClear() && checkRightSide())==true){
+            if(nextToABeeper()) {
+                turnOff();
+            }
             move();
             
-            
-            if (!frontIsClear() && checkRightSide()==true){
+            if (!frontIsClear()){
                 turnLeft();
             }
-            else{
-                
-                //
-            }
+          
         }
+        
+      
     }
-  
-    public void finish(){
-        turnOff();
+   public void turnRight(){
+       turnLeft();
+       turnLeft();
+       turnLeft();
     }
-    public void turnRight(){
-        turnLeft();
-        turnLeft();
-        turnLeft();
+   public void closeWindow(){
+        if (frontIsClear()){
+            putBeeper();
+            turnLeft();
+            
+            move();
+        }
+        else{
+            turnLeft();
+        }
+        
+ 
     }
-    public boolean checkRightSide(){
+   public boolean checkRightSide(){
         turnRight();
         if (!frontIsClear()){
             turnLeft();
             return true;
         }
         else{
-            
-            turnLeft();
             return false;
         }
     }
